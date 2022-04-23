@@ -1,6 +1,7 @@
 import { Course } from 'src/courses/entities/course.entity';
-import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity('lectures')
 export class Lecture {
   @PrimaryGeneratedColumn()
   LID: number;

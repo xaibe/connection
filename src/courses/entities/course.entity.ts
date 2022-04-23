@@ -3,15 +3,17 @@ import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
+  Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
 
+@Entity('courses')
 export class Course {
   @PrimaryGeneratedColumn()
-  CID: number;
+  id: number;
 
   @Column()
   title: string;

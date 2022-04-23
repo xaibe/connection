@@ -9,6 +9,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   @Public()
   @Post('login')
   async Login(@Body() createAuthDto: LoginUserDto) {

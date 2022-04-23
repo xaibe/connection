@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     console.log('entered validate in jwwt strategy', 'payload', payload);
     const obj = {
       id: payload.id,
-      email: payload.emailAddress,
+      email: payload.email,
       roles: payload.roles,
     };
     console.log('obj in validate in jwt strategy', obj);

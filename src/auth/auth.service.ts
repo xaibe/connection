@@ -42,7 +42,7 @@ export class AuthService {
     console.log('user account');
     const payload = {
       id: user.id,
-      email: user.emailAddress,
+      email: user.email,
       roles: user.roles,
     };
 

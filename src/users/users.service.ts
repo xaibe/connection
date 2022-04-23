@@ -86,13 +86,14 @@ export class UsersService {
       const user1 = await this.userRepository.findOne({
         where: { email: email },
       });
+      console.log('user1', user1);
 
       if (!user1) {
         throw new UnauthorizedException('Email/password incorrect');
       }
       const isMatch = await this.passwordsService.comparePassword(
-        pass,
         user1.password,
+        pass,
       );
       if (!isMatch) {
         throw new UnauthorizedException('Email/password incorrect');

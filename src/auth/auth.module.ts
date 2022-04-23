@@ -3,8 +3,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoursesService } from 'src/courses/courses.service';
+import { Course } from 'src/courses/entities/course.entity';
+import { Lecture } from 'src/lectures/entities/lecture.entity';
 import { LecturesService } from 'src/lectures/lectures.service';
 import { PasswordsService } from 'src/passwords/passwords.service';
+import { Profile } from 'src/profiles/entities/profile.entity';
 import { ProfilesService } from 'src/profiles/profiles.service';
 import { User } from 'src/users/entities/user.entity';
 import { UsersModule } from 'src/users/users.module';
@@ -19,7 +22,7 @@ import { LocalStrategy } from './Strategies/local.strategy';
   imports: [
     UsersModule,
     PassportModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Course, Lecture, Profile]),
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '5d' },

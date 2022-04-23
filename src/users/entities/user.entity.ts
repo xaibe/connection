@@ -1,13 +1,27 @@
 import { Course } from 'src/courses/entities/course.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Profile } from 'src/profiles/entities/profile.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Role } from '../role.enum';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Course, (Course) => Course.user)
+  @ManyToMany(() => Course)
+  @JoinTable()
   course: Course[];
+
+  @OneToOne(() => Profile)
+  @JoinColumn()
+  profile: Profile;
 
   @Column()
   first_name: string;

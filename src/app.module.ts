@@ -1,14 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import 'reflect-metadata';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
 import { CoursesModule } from './courses/courses.module';
+import { Course } from './courses/entities/course.entity';
+import { Lecture } from './lectures/entities/lecture.entity';
 import { LecturesModule } from './lectures/lectures.module';
 import { PasswordsModule } from './passwords/passwords.module';
+import { Profile } from './profiles/entities/profile.entity';
 import { ProfilesModule } from './profiles/profiles.module';
+import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 @Module({
   imports: [
@@ -17,25 +24,11 @@ import { UsersModule } from './users/users.module';
         type: 'postgres',
         host: configService.get('TYPEORM_HOST'),
         port: +configService.get<number>('TYPEORM_PORT'),
-        username: configService.get('TYPEORM_USER'),
+        username: configService.get('TYPEORM_USERNAME'),
         password: configService.get<string>('TYPEORM_PASSWORD'),
         database: configService.get('TYPEORM_DATABASE'),
-2        migrationsRun: true,
-
-        logging: true,
-
-        autoLoadEntities: true,
+        entities: [User, Profile, Lecture, Course],
         synchronize: true,
-        migrations: ['dist/migration/**/*.js'],
-
-        // migrations: [
-        //   'src/migration/**/*.ts',
-        //   //dist / migration/**/ * {.js,.ts }'
-        // ],
-        cli: {
-          //entitiesDir: 'src/entity',
-          //migrationsDir: 'src/migration',
-        },
       }),
       inject: [ConfigService],
     }),
@@ -48,6 +41,16 @@ import { UsersModule } from './users/users.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
