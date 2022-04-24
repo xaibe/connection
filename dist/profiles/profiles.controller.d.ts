@@ -9,7 +9,7 @@ export declare class ProfilesController {
         jobTitle: string;
         personalWebsite: string;
         photoUrl: string;
-        userId: any;
+        user: import("../users/entities/user.entity").User;
     } & import("./entities/profile.entity").Profile>;
     findAll(): string;
     findOne(id: string): string;

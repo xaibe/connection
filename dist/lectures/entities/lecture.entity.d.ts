@@ -1,7 +1,6 @@
 import { Course } from 'src/courses/entities/course.entity';
 export declare class Lecture {
-    LID: number;
-    CID: number;
+    id: number;
     title: string;
     slug: string;
     description: string;

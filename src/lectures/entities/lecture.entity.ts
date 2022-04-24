@@ -1,13 +1,17 @@
 import { Course } from 'src/courses/entities/course.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 @Entity('lectures')
+@Unique(['title'])
 export class Lecture {
   @PrimaryGeneratedColumn()
-  LID: number;
-
-  @Column()
-  CID: number;
+  id: number;
 
   @Column()
   title: string;

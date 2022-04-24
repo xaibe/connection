@@ -9,6 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfilesModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const passwords_service_1 = require("../passwords/passwords.service");
+const user_entity_1 = require("../users/entities/user.entity");
+const users_service_1 = require("../users/users.service");
 const profile_entity_1 = require("./entities/profile.entity");
 const profiles_controller_1 = require("./profiles.controller");
 const profiles_service_1 = require("./profiles.service");
@@ -16,9 +19,9 @@ let ProfilesModule = class ProfilesModule {
 };
 ProfilesModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([profile_entity_1.Profile])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([profile_entity_1.Profile, user_entity_1.User])],
         controllers: [profiles_controller_1.ProfilesController],
-        providers: [profiles_service_1.ProfilesService],
+        providers: [profiles_service_1.ProfilesService, users_service_1.UsersService, passwords_service_1.PasswordsService],
     })
 ], ProfilesModule);
 exports.ProfilesModule = ProfilesModule;

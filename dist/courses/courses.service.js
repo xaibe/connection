@@ -15,23 +15,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoursesService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const users_service_1 = require("../users/users.service");
 const typeorm_2 = require("typeorm");
 const course_entity_1 = require("./entities/course.entity");
 let CoursesService = class CoursesService {
-    constructor(courseRepository) {
+    constructor(courseRepository, usersService) {
         this.courseRepository = courseRepository;
+        this.usersService = usersService;
     }
     async create(createCourseDto, user) {
         console.log(user);
+        const users = await this.usersService.getById(user.id);
         const obj = {
             title: createCourseDto.title,
             slug: createCourseDto.slug,
             description: createCourseDto.description,
-            userId: user.id,
+            user: [],
         };
+        obj.user = [users];
         const result = await this.courseRepository.save(obj);
         console.log('result', result);
         return result;
+    }
+    async getById(id) {
+        const course = await this.courseRepository.findOne({
+            where: { id: id },
+            relations: ['user'],
+        });
+        if (!course) {
+            throw new common_1.NotFoundException('course with this id not found');
+        }
+        else {
+            return course;
+        }
     }
     findAll() {
         return `This action returns all courses`;
@@ -49,7 +65,8 @@ let CoursesService = class CoursesService {
 CoursesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(course_entity_1.Course)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        users_service_1.UsersService])
 ], CoursesService);
 exports.CoursesService = CoursesService;
 //# sourceMappingURL=courses.service.js.map

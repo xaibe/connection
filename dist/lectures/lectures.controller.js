@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LecturesController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const roles_guard_1 = require("../auth/guards/roles.guard");
+const role_enum_1 = require("../users/role.enum");
+const roles_decorator_1 = require("../users/roles.decorator");
 const create_lecture_dto_1 = require("./dto/create-lecture.dto");
 const update_lecture_dto_1 = require("./dto/update-lecture.dto");
 const lectures_service_1 = require("./lectures.service");
@@ -39,6 +42,8 @@ let LecturesController = class LecturesController {
     }
 };
 __decorate([
+    (0, roles_decorator_1.Roles)(role_enum_1.Role.Teacher),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -76,6 +81,7 @@ __decorate([
 LecturesController = __decorate([
     (0, swagger_1.ApiTags)('letures'),
     (0, common_1.Controller)('lectures'),
+    (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [lectures_service_1.LecturesService])
 ], LecturesController);
 exports.LecturesController = LecturesController;

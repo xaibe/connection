@@ -36,18 +36,16 @@ __decorate([
     __metadata("design:type", Date)
 ], Course.prototype, "created", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.course, { onDelete: 'CASCADE' }),
-    __metadata("design:type", user_entity_1.User)
+    (0, typeorm_1.ManyToMany)(() => user_entity_1.User),
+    (0, typeorm_1.JoinTable)(),
+    __metadata("design:type", Array)
 ], Course.prototype, "user", void 0);
-__decorate([
-    (0, typeorm_1.RelationId)((course) => course.user),
-    __metadata("design:type", Number)
-], Course.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => lecture_entity_1.Lecture, (lecture) => lecture.course),
     __metadata("design:type", Array)
 ], Course.prototype, "lectures", void 0);
 Course = __decorate([
+    (0, typeorm_1.Unique)(['title']),
     (0, typeorm_1.Entity)('courses')
 ], Course);
 exports.Course = Course;

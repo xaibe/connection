@@ -4,12 +4,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
-  RelationId,
+  Unique,
 } from 'typeorm';
-
+@Unique(['title'])
 @Entity('courses')
 export class Course {
   @PrimaryGeneratedColumn()
@@ -27,11 +28,9 @@ export class Course {
   @CreateDateColumn({ type: 'timestamp' })
   created!: Date;
 
-  @ManyToOne(() => User, (user) => user.course, { onDelete: 'CASCADE' })
-  user: User;
-
-  @RelationId((course: Course) => course.user) // you need to specify target relation
-  userId: number;
+  @ManyToMany(() => User)
+  @JoinTable()
+  user: User[];
 
   @OneToMany(() => Lecture, (lecture) => lecture.course)
   lectures: Lecture[];

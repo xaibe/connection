@@ -45,9 +45,9 @@ export class UsersService {
     }
   }
 
-  async getById(input): Promise<User> {
+  async getById(id): Promise<User> {
     const user = await this.userRepository.findOne({
-      where: input,
+      where: { id: id },
     });
     if (!user) {
       throw new NotFoundException();
@@ -57,9 +57,7 @@ export class UsersService {
   }
 
   async getAll(): Promise<User[]> {
-    return await this.userRepository.find({
-      //include: { applications: true },
-    });
+    return await this.userRepository.find({});
   }
 
   async updatePassword(email, password) {

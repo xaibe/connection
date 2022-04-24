@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-const course_entity_1 = require("../../courses/entities/course.entity");
 const profile_entity_1 = require("../../profiles/entities/profile.entity");
 const typeorm_1 = require("typeorm");
 const role_enum_1 = require("../role.enum");
@@ -20,11 +19,6 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], User.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.ManyToMany)(() => course_entity_1.Course),
-    (0, typeorm_1.JoinTable)(),
-    __metadata("design:type", Array)
-], User.prototype, "course", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => profile_entity_1.Profile),
     (0, typeorm_1.JoinColumn)(),

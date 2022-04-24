@@ -15,20 +15,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfilesService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const users_service_1 = require("../users/users.service");
 const typeorm_2 = require("typeorm");
 const profile_entity_1 = require("./entities/profile.entity");
 let ProfilesService = class ProfilesService {
-    constructor(profileRepository) {
+    constructor(profileRepository, usersService) {
         this.profileRepository = profileRepository;
+        this.usersService = usersService;
     }
     async create(createProfileDto, user) {
         console.log(user);
+        const users = await this.usersService.getById(user.id);
         const obj = {
             biography: createProfileDto.biography,
             jobTitle: createProfileDto.jobTitle,
             personalWebsite: createProfileDto.personalWebsite,
             photoUrl: createProfileDto.photoUrl,
-            userId: user.id,
+            user: users,
         };
         const result = await this.profileRepository.save(obj);
         console.log('result', result);
@@ -50,7 +53,8 @@ let ProfilesService = class ProfilesService {
 ProfilesService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(profile_entity_1.Profile)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        users_service_1.UsersService])
 ], ProfilesService);
 exports.ProfilesService = ProfilesService;
 //# sourceMappingURL=profiles.service.js.map

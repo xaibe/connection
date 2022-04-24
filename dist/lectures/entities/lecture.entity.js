@@ -17,11 +17,7 @@ let Lecture = class Lecture {
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Lecture.prototype, "LID", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Lecture.prototype, "CID", void 0);
+], Lecture.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -43,7 +39,8 @@ __decorate([
     __metadata("design:type", course_entity_1.Course)
 ], Lecture.prototype, "course", void 0);
 Lecture = __decorate([
-    (0, typeorm_1.Entity)('lectures')
+    (0, typeorm_1.Entity)('lectures'),
+    (0, typeorm_1.Unique)(['title'])
 ], Lecture);
 exports.Lecture = Lecture;
 //# sourceMappingURL=lecture.entity.js.map

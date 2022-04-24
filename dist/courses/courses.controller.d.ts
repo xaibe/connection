@@ -8,7 +8,7 @@ export declare class CoursesController {
         title: string;
         slug: string;
         description: string;
-        userId: any;
+        user: any[];
     } & import("./entities/course.entity").Course>;
     findAll(): string;
     findOne(id: string): string;

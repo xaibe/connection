@@ -57,9 +57,9 @@ let UsersService = class UsersService {
             return user;
         }
     }
-    async getById(input) {
+    async getById(id) {
         const user = await this.userRepository.findOne({
-            where: input,
+            where: { id: id },
         });
         if (!user) {
             throw new common_1.NotFoundException();

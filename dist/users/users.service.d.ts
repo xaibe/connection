@@ -11,7 +11,7 @@ export declare class UsersService {
     create(data: any): Promise<User>;
     getwithRole(role: Role): Promise<User>;
     getByEmail(email: string): Promise<User>;
-    getById(input: any): Promise<User>;
+    getById(id: any): Promise<User>;
     getAll(): Promise<User[]>;
     updatePassword(email: any, password: any): Promise<{
         message: string;
@@ -19,7 +19,6 @@ export declare class UsersService {
     }>;
     validateUser(email: string, pass: string): Promise<{
         id: number;
-        course: import("../courses/entities/course.entity").Course[];
         profile: import("../profiles/entities/profile.entity").Profile;
         first_name: string;
         last_name: string;

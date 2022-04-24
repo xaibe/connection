@@ -6,16 +6,23 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Role } from 'src/users/role.enum';
+import { Roles } from 'src/users/roles.decorator';
 import { CreateLectureDto } from './dto/create-lecture.dto';
 import { UpdateLectureDto } from './dto/update-lecture.dto';
 import { LecturesService } from './lectures.service';
 @ApiTags('letures')
 @Controller('lectures')
+@ApiBearerAuth()
 export class LecturesController {
   constructor(private readonly lecturesService: LecturesService) {}
 
+  @Roles(Role.Teacher)
+  @UseGuards(RolesGuard)
   @Post()
   create(@Body() createLectureDto: CreateLectureDto) {
     return this.lecturesService.create(createLectureDto);

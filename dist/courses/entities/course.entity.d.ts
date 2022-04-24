@@ -6,7 +6,6 @@ export declare class Course {
     slug: string;
     description: string;
     created: Date;
-    user: User;
-    userId: number;
+    user: User[];
     lectures: Lecture[];
 }
