@@ -16,65 +16,34 @@ exports.ProfilesController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const create_profile_dto_1 = require("./dto/create-profile.dto");
-const update_profile_dto_1 = require("./dto/update-profile.dto");
 const profiles_service_1 = require("./profiles.service");
 let ProfilesController = class ProfilesController {
     constructor(profilesService) {
         this.profilesService = profilesService;
     }
-    create(req, createProfileDto) {
+    async create(req, createProfileDto) {
         console.log('request', req.user);
-        return this.profilesService.create(createProfileDto, req.user);
+        return await this.profilesService.create(createProfileDto, req.user);
     }
-    findAll() {
-        return this.profilesService.findAll();
-    }
-    findOne(id) {
-        return this.profilesService.findOne(+id);
-    }
-    update(id, updateProfileDto) {
-        return this.profilesService.update(+id, updateProfileDto);
-    }
-    remove(id) {
-        return this.profilesService.remove(+id);
+    findOne(req) {
+        return this.profilesService.getById(req.user.id);
     }
 };
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('createProfile'),
     __param(0, (0, common_1.Request)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, create_profile_dto_1.CreateProfileDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ProfilesController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('findMyProfile'),
+    __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], ProfilesController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ProfilesController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_profile_dto_1.UpdateProfileDto]),
-    __metadata("design:returntype", void 0)
-], ProfilesController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], ProfilesController.prototype, "remove", null);
 ProfilesController = __decorate([
     (0, swagger_1.ApiTags)('profiles'),
     (0, swagger_1.ApiBearerAuth)(),

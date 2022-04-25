@@ -30,8 +30,8 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException('Inavalid User Name or password');
         }
     }
-    async updatePassword(email, password) {
-        const update = await this.usersService.updatePassword(email, password);
+    async updatePassword(data) {
+        const update = await this.usersService.updatePassword(data);
         if (update) {
             return update;
         }

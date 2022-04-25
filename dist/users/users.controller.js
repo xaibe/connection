@@ -22,18 +22,39 @@ let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    create(createUserDto) {
-        return this.usersService.create(createUserDto);
+    async create(createUserDto) {
+        return await this.usersService.create(createUserDto);
+    }
+    async findAll() {
+        return await this.usersService.getAll();
+    }
+    async findOne(id) {
+        return await this.usersService.getById(+id);
     }
 };
 __decorate([
     (0, constants_1.Public)(),
-    (0, common_1.Post)(),
+    (0, common_1.Post)('/SignUp'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UsersController.prototype, "create", null);
+__decorate([
+    (0, constants_1.Public)(),
+    (0, common_1.Get)('/FindAllUsers'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "findAll", null);
+__decorate([
+    (0, constants_1.Public)(),
+    (0, common_1.Get)('FindUserById/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "findOne", null);
 UsersController = __decorate([
     (0, swagger_1.ApiTags)('users'),
     (0, common_1.Controller)('users'),

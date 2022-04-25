@@ -26,16 +26,41 @@ let CoursesService = class CoursesService {
     async create(createCourseDto, user) {
         console.log(user);
         const users = await this.usersService.getById(user.id);
-        const obj = {
-            title: createCourseDto.title,
-            slug: createCourseDto.slug,
-            description: createCourseDto.description,
-            user: [],
-        };
-        obj.user = [users];
-        const result = await this.courseRepository.save(obj);
-        console.log('result', result);
-        return result;
+        const course = await this.findbyname(createCourseDto.title);
+        if (course) {
+            throw new common_1.BadRequestException('A course with this title already exists');
+        }
+        else {
+            const obj = {
+                title: createCourseDto.title,
+                slug: createCourseDto.slug,
+                description: createCourseDto.description,
+                user: [],
+            };
+            obj.user = [users];
+            const result = await this.courseRepository.save(obj);
+            console.log('result', result);
+            return result;
+        }
+    }
+    async joinCourse(user, CID) {
+        const users = await this.usersService.getById(user.id);
+        const course = await this.getById(CID);
+        if (course) {
+            course.user.push(users);
+            console.log(course);
+            const result = await this.courseRepository.save(course);
+            console.log('result', result);
+            return result;
+        }
+        else {
+            throw new common_1.BadRequestException('A course with this ID Does Not exists');
+        }
+    }
+    async findbyname(name) {
+        return await this.courseRepository.findOne({
+            where: { title: name },
+        });
     }
     async getById(id) {
         const course = await this.courseRepository.findOne({
@@ -49,17 +74,39 @@ let CoursesService = class CoursesService {
             return course;
         }
     }
-    findAll() {
-        return `This action returns all courses`;
+    async findAll() {
+        return await this.courseRepository.find({
+            relations: ['user', 'lectures'],
+        });
     }
-    findOne(id) {
-        return `This action returns a #${id} course`;
-    }
-    update(id, updateCourseDto) {
-        return `This action updates a #${id} course`;
-    }
-    remove(id) {
-        return `This action removes a #${id} course`;
+    async remove(user, id) {
+        const course = await this.courseRepository.findOne({
+            where: { id: id },
+            relations: ['user'],
+        });
+        if (course) {
+            let check;
+            const users = course.user;
+            await users.forEach(function (element) {
+                if (element.id === user.id) {
+                    console.log('user true');
+                }
+            });
+            if (check) {
+                const result = await this.courseRepository.delete({
+                    id,
+                });
+                if (!result) {
+                    throw new common_1.NotFoundException('unable to delete course');
+                }
+                else {
+                    return result;
+                }
+            }
+            else {
+                throw new common_1.UnauthorizedException('You are not able to delete some one else course');
+            }
+        }
     }
 };
 CoursesService = __decorate([

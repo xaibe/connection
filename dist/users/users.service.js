@@ -71,12 +71,12 @@ let UsersService = class UsersService {
     async getAll() {
         return await this.userRepository.find({});
     }
-    async updatePassword(email, password) {
-        const validateUser = await this.getByEmail(email);
+    async updatePassword(obj) {
+        const validateUser = await this.getByEmail(obj.email);
         if (validateUser) {
-            const comparePassword = this.passwordsService.comparePassword(validateUser.password, password);
+            const comparePassword = this.passwordsService.comparePassword(validateUser.password, obj.oldPassword);
         }
-        const hash = await this.passwordsService.hashPassword(password);
+        const hash = await this.passwordsService.hashPassword(obj.newPassword);
         const data = { password: hash };
         const id = validateUser.id;
         const update = await this.userRepository.update(id, data);

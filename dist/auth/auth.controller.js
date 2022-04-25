@@ -27,8 +27,7 @@ let AuthController = class AuthController {
         return await this.authService.validateUser(createAuthDto.email, createAuthDto.password);
     }
     async updatePassword(UpdatePasswordDto) {
-        const { email, Password } = UpdatePasswordDto;
-        return await this.authService.updatePassword(email, Password);
+        return await this.authService.updatePassword(UpdatePasswordDto);
     }
 };
 __decorate([

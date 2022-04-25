@@ -22,7 +22,6 @@ export class AuthController {
   @Public()
   @Patch('update-Password')
   async updatePassword(@Body() UpdatePasswordDto: UpdatePasswordDto) {
-    const { email, Password } = UpdatePasswordDto;
-    return await this.authService.updatePassword(email, Password);
+    return await this.authService.updatePassword(UpdatePasswordDto);
   }
 }

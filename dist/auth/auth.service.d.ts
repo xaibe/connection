@@ -7,7 +7,7 @@ export declare class AuthService {
     private readonly passwordsService;
     constructor(jwtService: JwtService, usersService: UsersService, passwordsService: PasswordsService);
     validateUser(email: string, pass: string): Promise<any>;
-    updatePassword(email: string, password: string): Promise<{
+    updatePassword(data: any): Promise<{
         message: string;
         update: import("typeorm").UpdateResult;
     }>;

@@ -1,5 +1,4 @@
 import { CreateProfileDto } from './dto/create-profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfilesService } from './profiles.service';
 export declare class ProfilesController {
     private readonly profilesService;
@@ -11,8 +10,5 @@ export declare class ProfilesController {
         photoUrl: string;
         user: import("../users/entities/user.entity").User;
     } & import("./entities/profile.entity").Profile>;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateProfileDto: UpdateProfileDto): string;
-    remove(id: string): string;
+    findOne(req: any): Promise<import("./entities/profile.entity").Profile>;
 }

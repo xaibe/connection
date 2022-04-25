@@ -23,42 +23,66 @@ let LecturesService = class LecturesService {
         this.lectureRepository = lectureRepository;
         this.coursesService = coursesService;
     }
-    async create(createLectureDto) {
-        const courseId = createLectureDto.CID;
-        console.log('course id', courseId);
+    async create(data, user) {
+        const courseId = data.CID;
+        console.log('data', data);
         const course = await this.coursesService.getById(courseId);
         if (!course) {
             throw new common_1.BadRequestException('Course with id does not exists');
         }
         else {
-            const obj = {
-                title: createLectureDto.title,
-                slug: createLectureDto.slug,
-                description: createLectureDto.description,
-                video_url: createLectureDto.video_url,
-                course: course,
-            };
-            const result = await this.lectureRepository.save(obj);
-            console.log('result', result);
-            return result;
+            let check = false;
+            const users = course.user;
+            users.forEach(async function (element) {
+                if (element.id === user.id) {
+                    console.log('entered id');
+                    check = true;
+                }
+            });
+            if (check) {
+                const lecture = await this.findByName(data.title);
+                if (lecture) {
+                    throw new common_1.BadRequestException('A lecture with this title already exists');
+                }
+                else {
+                    const obj = {
+                        title: data.title,
+                        slug: data.slug,
+                        description: data.description,
+                        video_url: data.video_url,
+                        course: course,
+                    };
+                    const result = await this.lectureRepository.save(obj);
+                    console.log('result', result);
+                    return result;
+                }
+            }
+            else {
+                throw new common_1.UnauthorizedException('You are Unauthorized to add lectures to some one else course');
+            }
         }
     }
-    async findbyname(name) {
+    async findByName(name) {
         return await this.lectureRepository.findOne({
             where: { title: name },
         });
     }
+    async getById(id) {
+        const lecture = await this.lectureRepository.findOne({
+            where: { id: id },
+            relations: ['course'],
+        });
+        if (!lecture) {
+            throw new common_1.NotFoundException('lecture with this id not found');
+        }
+        else {
+            return lecture;
+        }
+    }
     async findAll() {
-        return await this.lectureRepository.find({});
-    }
-    findOne(id) {
-        return `This action returns a #${id} lecture`;
-    }
-    update(id, updateLectureDto) {
-        return `This action updates a #${id} lecture`;
-    }
-    remove(id) {
-        return `This action removes a #${id} lecture`;
+        return await this.lectureRepository.find({
+            relations: ['course'],
+        });
     }
 };
 LecturesService = __decorate([

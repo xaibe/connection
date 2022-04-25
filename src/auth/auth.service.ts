@@ -22,8 +22,8 @@ export class AuthService {
     }
   }
 
-  async updatePassword(email: string, password: string) {
-    const update = await this.usersService.updatePassword(email, password);
+  async updatePassword(data) {
+    const update = await this.usersService.updatePassword(data);
     if (update) {
       return update;
     }

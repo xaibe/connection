@@ -1,7 +1,6 @@
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { CreateProfileDto } from './dto/create-profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Profile } from './entities/profile.entity';
 export declare class ProfilesService {
     private readonly profileRepository;
@@ -14,8 +13,5 @@ export declare class ProfilesService {
         photoUrl: string;
         user: import("../users/entities/user.entity").User;
     } & Profile>;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateProfileDto: UpdateProfileDto): string;
-    remove(id: number): string;
+    getById(id: any): Promise<Profile>;
 }

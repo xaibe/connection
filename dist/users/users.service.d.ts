@@ -13,7 +13,7 @@ export declare class UsersService {
     getByEmail(email: string): Promise<User>;
     getById(id: any): Promise<User>;
     getAll(): Promise<User[]>;
-    updatePassword(email: any, password: any): Promise<{
+    updatePassword(obj: any): Promise<{
         message: string;
         update: import("typeorm").UpdateResult;
     }>;

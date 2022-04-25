@@ -1,11 +1,10 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -13,38 +12,27 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/users/role.enum';
 import { Roles } from 'src/users/roles.decorator';
 import { CreateLectureDto } from './dto/create-lecture.dto';
-import { UpdateLectureDto } from './dto/update-lecture.dto';
 import { LecturesService } from './lectures.service';
-@ApiTags('letures')
+@ApiTags('letures') //to show on the swagger about which api belongs to which module
 @Controller('lectures')
-@ApiBearerAuth()
+@ApiBearerAuth() //used for swagger to get bearer auth to recognize user
 export class LecturesController {
   constructor(private readonly lecturesService: LecturesService) {}
 
   @Roles(Role.Teacher)
   @UseGuards(RolesGuard)
-  @Post()
-  create(@Body() createLectureDto: CreateLectureDto) {
-    return this.lecturesService.create(createLectureDto);
+  @Post('/createLectures')
+  async create(@Request() req, @Body() createLectureDto: CreateLectureDto) {
+    return await this.lecturesService.create(createLectureDto, req.user);
   }
 
-  @Get()
-  findAll() {
-    return this.lecturesService.findAll();
+  @Get('/getalllectures')
+  async findAll() {
+    return await this.lecturesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.lecturesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLectureDto: UpdateLectureDto) {
-    return this.lecturesService.update(+id, updateLectureDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.lecturesService.remove(+id);
+  @Get('/GetSingleLectureById/:id')
+  async findOne(@Param('id') id: string) {
+    return await this.lecturesService.getById(+id);
   }
 }

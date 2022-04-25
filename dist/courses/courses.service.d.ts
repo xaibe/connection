@@ -1,7 +1,6 @@
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
 export declare class CoursesService {
     private readonly courseRepository;
@@ -13,9 +12,9 @@ export declare class CoursesService {
         description: string;
         user: any[];
     } & Course>;
+    joinCourse(user: any, CID: any): Promise<Course>;
+    findbyname(name: any): Promise<Course>;
     getById(id: any): Promise<Course>;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateCourseDto: UpdateCourseDto): string;
-    remove(id: number): string;
+    findAll(): Promise<Course[]>;
+    remove(user: any, id: number): Promise<import("typeorm").DeleteResult>;
 }

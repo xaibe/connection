@@ -37,17 +37,17 @@ let ProfilesService = class ProfilesService {
         console.log('result', result);
         return result;
     }
-    findAll() {
-        return `This action returns all profiles`;
-    }
-    findOne(id) {
-        return `This action returns a #${id} profile`;
-    }
-    update(id, updateProfileDto) {
-        return `This action updates a #${id} profile`;
-    }
-    remove(id) {
-        return `This action removes a #${id} profile`;
+    async getById(id) {
+        const profile = await this.profileRepository.findOne({
+            where: { id: id },
+            relations: ['user'],
+        });
+        if (!profile) {
+            throw new common_1.NotFoundException('profile with this id not found');
+        }
+        else {
+            return profile;
+        }
     }
 };
 ProfilesService = __decorate([

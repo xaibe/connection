@@ -60,15 +60,15 @@ export class UsersService {
     return await this.userRepository.find({});
   }
 
-  async updatePassword(email, password) {
-    const validateUser = await this.getByEmail(email);
+  async updatePassword(obj) {
+    const validateUser = await this.getByEmail(obj.email);
     if (validateUser) {
       const comparePassword = this.passwordsService.comparePassword(
         validateUser.password,
-        password,
+        obj.oldPassword,
       );
     }
-    const hash = await this.passwordsService.hashPassword(password);
+    const hash = await this.passwordsService.hashPassword(obj.newPassword);
     const data = { password: hash };
     const id = validateUser.id;
     const update = await this.userRepository.update(id, data);
@@ -79,6 +79,7 @@ export class UsersService {
     }
   }
 
+  //this is used for validate the user email and password for login and it is called in the auth modules
   async validateUser(email: string, pass: string) {
     try {
       const user1 = await this.userRepository.findOne({

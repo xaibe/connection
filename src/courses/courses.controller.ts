@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Request,
   UseGuards,
@@ -15,7 +14,6 @@ import { Role } from 'src/users/role.enum';
 import { Roles } from 'src/users/roles.decorator';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
 
 @ApiTags('courses')
 @Controller('courses')
@@ -25,30 +23,34 @@ export class CoursesController {
 
   @Roles(Role.Teacher)
   @UseGuards(RolesGuard)
-  @Post()
+  @Post('/Createcourse')
   create(@Request() req, @Body() createCourseDto: CreateCourseDto) {
     console.log('req.user', req.user);
-
     return this.coursesService.create(createCourseDto, req.user);
   }
 
-  @Get()
-  findAll() {
-    return this.coursesService.findAll();
+  @Roles(Role.Student)
+  @UseGuards(RolesGuard)
+  @Post('/joinCourse/:CourseId')
+  Join(@Request() req, @Param('CourseId') CourseId: string) {
+    console.log('req.user', req.user);
+    return this.coursesService.joinCourse(req.user, +CourseId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.coursesService.findOne(+id);
+  @Get('/getAllCourses')
+  async findAll() {
+    return await this.coursesService.findAll();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
-    return this.coursesService.update(+id, updateCourseDto);
+  @Get('/getCourseById/:id')
+  async findOne(@Param('id') id: string) {
+    return await this.coursesService.getById(+id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.coursesService.remove(+id);
+  @Roles(Role.Teacher)
+  @UseGuards(RolesGuard)
+  @Delete('/deleteCourse/:id')
+  async remove(@Request() req, @Param('id') id: string) {
+    return await this.coursesService.remove(req.user, +id);
   }
 }

@@ -23,8 +23,13 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdatePasswordDto.prototype, "oldPassword", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(8, 32),
     __metadata("design:type", String)
-], UpdatePasswordDto.prototype, "Password", void 0);
+], UpdatePasswordDto.prototype, "newPassword", void 0);
 exports.UpdatePasswordDto = UpdatePasswordDto;
 //# sourceMappingURL=update-password.dto.js.map

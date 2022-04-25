@@ -19,65 +19,44 @@ const roles_guard_1 = require("../auth/guards/roles.guard");
 const role_enum_1 = require("../users/role.enum");
 const roles_decorator_1 = require("../users/roles.decorator");
 const create_lecture_dto_1 = require("./dto/create-lecture.dto");
-const update_lecture_dto_1 = require("./dto/update-lecture.dto");
 const lectures_service_1 = require("./lectures.service");
 let LecturesController = class LecturesController {
     constructor(lecturesService) {
         this.lecturesService = lecturesService;
     }
-    create(createLectureDto) {
-        return this.lecturesService.create(createLectureDto);
+    async create(req, createLectureDto) {
+        return await this.lecturesService.create(createLectureDto, req.user);
     }
-    findAll() {
-        return this.lecturesService.findAll();
+    async findAll() {
+        return await this.lecturesService.findAll();
     }
-    findOne(id) {
-        return this.lecturesService.findOne(+id);
-    }
-    update(id, updateLectureDto) {
-        return this.lecturesService.update(+id, updateLectureDto);
-    }
-    remove(id) {
-        return this.lecturesService.remove(+id);
+    async findOne(id) {
+        return await this.lecturesService.getById(+id);
     }
 };
 __decorate([
     (0, roles_decorator_1.Roles)(role_enum_1.Role.Teacher),
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_lecture_dto_1.CreateLectureDto]),
-    __metadata("design:returntype", void 0)
-], LecturesController.prototype, "create", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], LecturesController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], LecturesController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Post)('/createLectures'),
+    __param(0, (0, common_1.Request)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_lecture_dto_1.UpdateLectureDto]),
-    __metadata("design:returntype", void 0)
-], LecturesController.prototype, "update", null);
+    __metadata("design:paramtypes", [Object, create_lecture_dto_1.CreateLectureDto]),
+    __metadata("design:returntype", Promise)
+], LecturesController.prototype, "create", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Get)('/getalllectures'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], LecturesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('/GetSingleLectureById/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], LecturesController.prototype, "remove", null);
+    __metadata("design:returntype", Promise)
+], LecturesController.prototype, "findOne", null);
 LecturesController = __decorate([
     (0, swagger_1.ApiTags)('letures'),
     (0, common_1.Controller)('lectures'),

@@ -1,6 +1,5 @@
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
 export declare class CoursesController {
     private readonly coursesService;
     constructor(coursesService: CoursesService);
@@ -10,8 +9,8 @@ export declare class CoursesController {
         description: string;
         user: any[];
     } & import("./entities/course.entity").Course>;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateCourseDto: UpdateCourseDto): string;
-    remove(id: string): string;
+    Join(req: any, CourseId: string): Promise<import("./entities/course.entity").Course>;
+    findAll(): Promise<import("./entities/course.entity").Course[]>;
+    findOne(id: string): Promise<import("./entities/course.entity").Course>;
+    remove(req: any, id: string): Promise<import("typeorm").DeleteResult>;
 }
